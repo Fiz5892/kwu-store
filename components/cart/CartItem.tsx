@@ -13,9 +13,30 @@ interface CartItemProps {
 export default function CartItem({ item }: CartItemProps) {
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
+  const selectedItemIds = useCartStore((s) => s.selectedItemIds);
+  const toggleSelectItem = useCartStore((s) => s.toggleSelectItem);
+  const isSelected = selectedItemIds.includes(item.id);
 
   return (
-    <div className="flex gap-3 bg-white rounded-xl border-2 border-[#D3DC86] p-3">
+    <div className={`flex gap-3 bg-white rounded-xl border-2 p-3 transition-colors ${isSelected ? 'border-[#D3DC86] bg-[#EFF3E0]/20' : 'border-gray-200'}`}>
+      {/* Checkbox */}
+      <div className="flex items-center justify-center pt-8">
+        <div 
+          onClick={() => toggleSelectItem(item.id)}
+          className={`w-5 h-5 rounded border-2 flex items-center justify-center cursor-pointer transition-colors ${
+            isSelected 
+              ? 'bg-[#D3DC86] border-[#D3DC86] text-[#778873]' 
+              : 'border-gray-300 bg-white'
+          }`}
+        >
+          {isSelected && (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          )}
+        </div>
+      </div>
+
       {/* Image */}
       <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
         <Image

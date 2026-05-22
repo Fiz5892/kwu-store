@@ -17,16 +17,16 @@ async function seed() {
   // 1. Site Config
   console.log('📝 Menambahkan site config...');
   await db.insert(siteConfig).values({
-    storeName: 'Toko Hijau',
+    storeName: 'KWU STORE',
     storeTagline: 'Belanja mudah dan nyaman',
     whatsappNumber: '6281234567890',
-    aboutTitle: 'Tentang Toko Hijau',
+    aboutTitle: 'Tentang KWU STORE',
     aboutText:
-      'Toko Hijau adalah toko online yang menyediakan berbagai macam produk berkualitas tinggi dengan harga yang terjangkau. Kami berkomitmen untuk memberikan pelayanan terbaik dan pengalaman belanja yang menyenangkan bagi setiap pelanggan.\n\nDengan sistem pemesanan via WhatsApp, kami memastikan setiap pesanan diproses dengan cepat dan personal. Kami percaya bahwa belanja online harusnya mudah, nyaman, dan menyenangkan.',
+      'KWU STORE adalah toko online yang menyediakan berbagai macam produk berkualitas tinggi dengan harga yang terjangkau. Kami berkomitmen untuk memberikan pelayanan terbaik dan pengalaman belanja yang menyenangkan bagi setiap pelanggan.\n\nDengan sistem pemesanan via WhatsApp, kami memastikan setiap pesanan diproses dengan cepat dan personal. Kami percaya bahwa belanja online harusnya mudah, nyaman, dan menyenangkan.',
     address: 'Jl. Hijau Daun No. 123, Malang, Jawa Timur 65145',
-    email: 'hello@tokohijau.com',
-    instagram: 'tokohijau',
-    facebook: 'tokohijau',
+    email: 'hello@kwustore.com',
+    instagram: 'kwustore',
+    facebook: 'kwustore',
     operationalHours: 'Senin - Sabtu, 08:00 - 20:00 WIB',
   });
 

@@ -12,7 +12,7 @@ interface RecommendedSectionProps {
 }
 
 export default function RecommendedSection({
-  title = '🔥 Terlaris',
+  title = 'Terlaris',
   limit = 8,
   excludeId,
 }: RecommendedSectionProps) {

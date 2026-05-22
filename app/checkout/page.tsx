@@ -18,9 +18,11 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const items = useCartStore((s) => s.items);
-  const totalPrice = useCartStore((s) => s.totalPrice);
-  const clearCart = useCartStore((s) => s.clearCart);
+  const allItems = useCartStore((s) => s.items);
+  const selectedItemIds = useCartStore((s) => s.selectedItemIds);
+  const items = allItems.filter(item => selectedItemIds.includes(item.id));
+  const totalPrice = useCartStore((s) => s.selectedTotalPrice);
+  const clearSelectedItems = useCartStore((s) => s.clearSelectedItems);
 
   const profile = useProfileStore();
 
@@ -143,8 +145,8 @@ export default function CheckoutPage() {
       const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
       window.open(waUrl, '_blank');
 
-      // Clear cart
-      clearCart();
+      // Clear selected items from cart
+      clearSelectedItems();
 
       // Redirect ke beranda
       router.push('/beranda');

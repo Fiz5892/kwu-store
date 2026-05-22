@@ -42,7 +42,7 @@ export default function BerandaPage() {
         <div className="max-w-5xl mx-auto px-4 py-12 md:py-20">
           <div className="max-w-lg">
             <h1 className="text-3xl md:text-5xl font-bold font-heading mb-3 tracking-tight">
-              Toko Hijau
+              KWU STORE
             </h1>
             <p className="text-white/80 text-base md:text-lg mb-6">
               Belanja mudah dan nyaman. Temukan produk berkualitas dengan harga terbaik.
@@ -82,7 +82,7 @@ export default function BerandaPage() {
         )}
 
         {/* Produk Terlaris */}
-        <RecommendedSection title="🔥 Terlaris" limit={8} />
+        <RecommendedSection title="TERLARIS" limit={8} />
 
         {/* Semua Produk */}
         <section className="py-6">

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Save, Trash2, ChevronDown, ChevronUp, Package } from 'lucide-react';
+import { Save, ChevronDown, ChevronUp, Package, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import { useProfileStore } from '@/store/profileStore';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
@@ -47,13 +48,7 @@ export default function ProfilePage() {
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const handleClearAll = () => {
-    if (!confirm('Yakin ingin menghapus data profil dan keranjang?')) return;
-    profile.clearProfile();
-    clearCart();
-    localStorage.removeItem('hasVisited');
-    setForm({ name: '', phone: '', address: '' });
-  };
+
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -148,7 +143,7 @@ export default function ProfilePage() {
             </p>
           ) : (
             <div className="space-y-2">
-              {orders.map((order) => (
+              {orders.slice(0, 3).map((order) => (
                 <div
                   key={order.orderNumber}
                   className="border-2 border-[#D3DC86] rounded-lg overflow-hidden"
@@ -208,19 +203,18 @@ export default function ProfilePage() {
                   )}
                 </div>
               ))}
+              {orders.length > 3 && (
+                <Link
+                  href="/profile/pesanan"
+                  className="mt-4 flex items-center justify-center w-full py-2.5 text-sm font-medium text-[#778873] bg-[#EFF3E0] hover:bg-[#D3DC86] rounded-lg transition-colors duration-200"
+                >
+                  Lihat Semua Pesanan
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              )}
             </div>
           )}
         </div>
-
-        {/* Clear Data */}
-        <Button
-          variant="destructive"
-          onClick={handleClearAll}
-          className="w-full"
-        >
-          <Trash2 className="w-4 h-4 mr-2" />
-          Hapus Data Profil & Keranjang
-        </Button>
       </div>
     </div>
   );

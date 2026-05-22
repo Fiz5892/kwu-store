@@ -12,7 +12,7 @@ export default function Footer() {
   // Sembunyikan di halaman admin dan splash screen
   if (pathname === '/' || pathname.startsWith('/admin')) return null;
 
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'Toko Hijau';
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'KWU STORE';
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '628000000000';
 
   return (
@@ -104,7 +104,7 @@ export default function Footer() {
       <div className="mt-16 pt-6 border-t border-white/10 text-center px-6">
         <p className="text-xs text-white/60">
           &copy; {new Date().getFullYear()} {storeName}. All rights reserved. 
-          <span className="hidden sm:inline"> | Designed with ❤️ for KWU.</span>
+          <span className="hidden sm:inline"> | Designed with love for KWU.</span>
         </p>
       </div>
     </footer>

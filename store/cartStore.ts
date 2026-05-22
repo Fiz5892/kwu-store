@@ -6,12 +6,18 @@ import type { CartItem } from '@/types';
 
 interface CartState {
   items: CartItem[];
+  selectedItemIds: string[];
   addItem: (item: Omit<CartItem, 'id' | 'quantity'>) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  toggleSelectItem: (id: string) => void;
+  selectAllItems: (selectAll: boolean) => void;
   clearCart: () => void;
+  clearSelectedItems: () => void;
   totalItems: () => number;
   totalPrice: () => number;
+  selectedTotalItems: () => number;
+  selectedTotalPrice: () => number;
   formattedTotalPrice: () => string;
   // Untuk trigger animasi badge
   _cartVersion: number;
@@ -21,6 +27,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      selectedItemIds: [],
       _cartVersion: 0,
 
       addItem: (item) => {
@@ -32,26 +39,39 @@ export const useCartStore = create<CartState>()(
                 ? { ...i, quantity: Math.min(i.quantity + 1, i.stock) }
                 : i
             ),
+            selectedItemIds: !get().selectedItemIds.includes(existing.id) 
+              ? [...get().selectedItemIds, existing.id] 
+              : get().selectedItemIds,
             _cartVersion: get()._cartVersion + 1,
           });
         } else {
+          const newId = `cart-${item.productId}-${Date.now()}`;
           set({
             items: [
               ...get().items,
-              { ...item, id: `cart-${item.productId}-${Date.now()}`, quantity: 1 },
+              { ...item, id: newId, quantity: 1 },
             ],
+            selectedItemIds: [...get().selectedItemIds, newId],
             _cartVersion: get()._cartVersion + 1,
           });
         }
       },
 
       removeItem: (id) => {
-        set({ items: get().items.filter((i) => i.id !== id), _cartVersion: get()._cartVersion + 1 });
+        set({ 
+          items: get().items.filter((i) => i.id !== id), 
+          selectedItemIds: get().selectedItemIds.filter((selectedId) => selectedId !== id),
+          _cartVersion: get()._cartVersion + 1 
+        });
       },
 
       updateQuantity: (id, quantity) => {
         if (quantity <= 0) {
-          set({ items: get().items.filter((i) => i.id !== id), _cartVersion: get()._cartVersion + 1 });
+          set({ 
+            items: get().items.filter((i) => i.id !== id), 
+            selectedItemIds: get().selectedItemIds.filter((selectedId) => selectedId !== id),
+            _cartVersion: get()._cartVersion + 1 
+          });
           return;
         }
         set({
@@ -62,7 +82,26 @@ export const useCartStore = create<CartState>()(
         });
       },
 
-      clearCart: () => set({ items: [], _cartVersion: get()._cartVersion + 1 }),
+      toggleSelectItem: (id) => {
+        set({
+          selectedItemIds: get().selectedItemIds.includes(id)
+            ? get().selectedItemIds.filter((selectedId) => selectedId !== id)
+            : [...get().selectedItemIds, id],
+        });
+      },
+
+      selectAllItems: (selectAll) => {
+        set({
+          selectedItemIds: selectAll ? get().items.map((i) => i.id) : [],
+        });
+      },
+
+      clearCart: () => set({ items: [], selectedItemIds: [], _cartVersion: get()._cartVersion + 1 }),
+
+      clearSelectedItems: () => {
+        const remainingItems = get().items.filter((i) => !get().selectedItemIds.includes(i.id));
+        set({ items: remainingItems, selectedItemIds: [], _cartVersion: get()._cartVersion + 1 });
+      },
 
       totalItems: () => {
         return get().items.reduce((sum, item) => sum + item.quantity, 0);
@@ -70,6 +109,18 @@ export const useCartStore = create<CartState>()(
 
       totalPrice: () => {
         return get().items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      },
+
+      selectedTotalItems: () => {
+        return get().items
+          .filter((i) => get().selectedItemIds.includes(i.id))
+          .reduce((sum, item) => sum + item.quantity, 0);
+      },
+
+      selectedTotalPrice: () => {
+        return get().items
+          .filter((i) => get().selectedItemIds.includes(i.id))
+          .reduce((sum, item) => sum + item.price * item.quantity, 0);
       },
 
       formattedTotalPrice: () => {

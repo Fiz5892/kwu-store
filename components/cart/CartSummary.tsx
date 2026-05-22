@@ -8,8 +8,8 @@ import Button from '@/components/ui/Button';
 import { ShoppingBag } from 'lucide-react';
 
 export default function CartSummary() {
-  const totalPrice = useCartStore((s) => s.totalPrice);
-  const totalItems = useCartStore((s) => s.totalItems);
+  const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
+  const selectedTotalItems = useCartStore((s) => s.selectedTotalItems);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ export default function CartSummary() {
 
       <div className="space-y-2 text-sm">
         <div className="flex justify-between text-[#778873]">
-          <span>Subtotal ({totalItems()} item)</span>
-          <span className="font-medium">{formatPrice(totalPrice())}</span>
+          <span>Subtotal ({selectedTotalItems()} item)</span>
+          <span className="font-medium">{formatPrice(selectedTotalPrice())}</span>
         </div>
         <div className="border-t border-[#D3DC86] pt-2">
           <p className="text-xs text-[#A1BC99] italic">
@@ -42,16 +42,23 @@ export default function CartSummary() {
         </div>
         <div className="flex justify-between text-[#778873] font-semibold text-base border-t border-[#D3DC86] pt-2">
           <span>Total</span>
-          <span>{formatPrice(totalPrice())}</span>
+          <span>{formatPrice(selectedTotalPrice())}</span>
         </div>
       </div>
 
-      <Link href="/checkout" className="block">
-        <Button className="w-full" size="lg">
+      {selectedTotalItems() > 0 ? (
+        <Link href="/checkout" className="block">
+          <Button className="w-full" size="lg">
+            <ShoppingBag className="w-4 h-4 mr-2" />
+            Lanjut ke Checkout
+          </Button>
+        </Link>
+      ) : (
+        <Button className="w-full opacity-50 cursor-not-allowed" size="lg" disabled>
           <ShoppingBag className="w-4 h-4 mr-2" />
-          Lanjut ke Checkout
+          Pilih Item Dahulu
         </Button>
-      </Link>
+      )}
     </div>
   );
 }

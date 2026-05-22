@@ -19,9 +19,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Toko Hijau — Belanja Mudah dan Nyaman',
+  title: 'KWU STORE — Belanja Mudah dan Nyaman',
   description: 'Toko online terpercaya dengan berbagai produk berkualitas. Belanja mudah, checkout via WhatsApp.',
-  keywords: ['toko online', 'belanja', 'e-commerce', 'toko hijau'],
+  keywords: ['toko online', 'belanja', 'e-commerce', 'kwu store'],
 };
 
 export default function RootLayout({

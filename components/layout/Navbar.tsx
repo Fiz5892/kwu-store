@@ -36,7 +36,7 @@ export default function Navbar() {
   if (pathname.startsWith('/admin')) return null;
 
   const showBack = pathname !== '/beranda' && pathname !== '/';
-  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'Toko Hijau';
+  const storeName = process.env.NEXT_PUBLIC_STORE_NAME || 'KWU STORE';
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#778873] text-white h-14">

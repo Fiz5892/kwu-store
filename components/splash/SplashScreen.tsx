@@ -34,7 +34,7 @@ export default function SplashScreen() {
       {/* Logo / Store Name */}
       <div className="animate-splash-in">
         <h1 className="text-5xl md:text-6xl font-bold text-[#778873] font-heading tracking-tight">
-          Toko Hijau
+          KWU STORE
         </h1>
       </div>
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Minus, Plus, ShoppingCart, ShoppingBag, Check } from 'lucide-react';
+import { Minus, Plus, ShoppingCart, ShoppingBag, Check, Share2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import Button from '@/components/ui/Button';
@@ -84,10 +84,27 @@ export default function ProductDetailPage() {
     setTimeout(() => router.push('/keranjang'), 300);
   };
 
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: product.name,
+          text: `Cek ${product.name} di KWU Store!`,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Tautan disalin ke clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <div className="max-w-5xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
           {/* Image Gallery */}
           <div>
             <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-[#D3DC86] bg-white">
@@ -131,9 +148,18 @@ export default function ProductDetailPage() {
           {/* Product Info */}
           <div>
             <Badge className="mb-2">{product.orderCount ?? 0} terjual</Badge>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#778873] font-heading mb-3">
-              {product.name}
-            </h1>
+            <div className="flex items-start justify-between gap-4 mb-3">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#778873] font-heading leading-tight">
+                {product.name}
+              </h1>
+              <button
+                onClick={handleShare}
+                className="p-2 text-[#A1BC99] hover:bg-[#EFF3E0] hover:text-[#778873] rounded-full transition-colors flex-shrink-0 cursor-pointer"
+                aria-label="Bagikan Produk"
+              >
+                <Share2 className="w-5 h-5" />
+              </button>
+            </div>
 
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl font-bold text-[#778873]">
@@ -155,13 +181,7 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {/* Description */}
-            <div className="mb-6">
-              <h3 className="text-sm font-semibold text-[#778873] mb-2">Deskripsi</h3>
-              <p className="text-sm text-[#778873]/80 leading-relaxed whitespace-pre-line">
-                {product.description}
-              </p>
-            </div>
+
 
             {/* Quantity Selector */}
             {!isOutOfStock && (
@@ -214,6 +234,16 @@ export default function ProductDetailPage() {
               </Button>
             </div>
           </div>
+        </div>
+
+        {/* Description Section (Full Width Below) */}
+        <div className="mt-10 bg-white rounded-xl border-2 border-[#D3DC86] p-6">
+          <h3 className="text-lg font-bold text-[#778873] font-heading mb-4">
+            Deskripsi Produk
+          </h3>
+          <p className="text-[15px] text-[#778873]/90 leading-relaxed whitespace-pre-line">
+            {product.description}
+          </p>
         </div>
 
         {/* Recommended Products */}
