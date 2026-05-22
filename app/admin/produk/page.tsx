@@ -414,7 +414,8 @@ export default function AdminProdukPage() {
                   </div>
                   <Button 
                     type="button" 
-                    variant="outline"
+                    variant="secondary"
+                    size="sm"
                     onClick={() => {
                       if (newImageUrl) {
                         setForm({ ...form, images: [...form.images, newImageUrl] });
